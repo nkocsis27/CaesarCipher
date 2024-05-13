@@ -3,6 +3,9 @@ import collections
 def checkForWords(mes):
     tempVal = 0
     comWords = open("commonWords.txt")
+    
+    numOfWords = mes.count(" ")
+    
     while True:
         line = comWords.readline()
         if not line:
@@ -12,7 +15,7 @@ def checkForWords(mes):
         if line in mes:
             tempVal = tempVal + mes.count(line)
         
-        if tempVal > (len(mes)/4):
+        if tempVal > (numOfWords/4):
             return True
 
     
@@ -25,7 +28,7 @@ def encrypt(mes, key = 10):
 
     if f == True:
     
-        inputfile = open("textFile2.txt")
+        inputfile = open("textFile.txt")
         outputfile = open('testFileOutput.txt', 'w')
         while 1:
             char = inputfile.read(1)
@@ -33,14 +36,14 @@ def encrypt(mes, key = 10):
                 break
             if (ord(char) == 10):
                 en += "\n"
-            elif (ord(char) == 32):
-                en += " "
+         #   elif (ord(char) == 32):
+           #     en += " "
             else:
-                en += chr((ord(char) + key - 33) %95 + 33)
+                en += chr((ord(char) + key - 32) %95 + 32)
             
             #print((ord(char) + key - 32) %95 + 32)
         
-        print(en)
+        #print(en)
         outputfile.write(en)
         outputfile.close()
         inputfile.close()
@@ -49,7 +52,7 @@ def encrypt(mes, key = 10):
         
     else:
         for i in mes:
-            en += chr((ord(i) + key - 33) %95 + 33)
+            en += chr((ord(i) + key - 32) %95 + 32)
  
     return en
 
@@ -69,7 +72,8 @@ def decryptNoKey(mes):
         guessOutput = decrypt(mes, guessKey)
         #print("attempted output: " + guessOutput)
         if (checkForWords(guessOutput) == True) :
-            print("Number of keys tried: " + str(i))
+            print("Number of keys tried: " +str(i + 1))
+            print("Key to Cipher is: "+ str(guessKey))
             return guessOutput
         i = i +1
 
@@ -96,8 +100,8 @@ def decrypt(mes, tempKey):
     for i in mes:
         if i == "\n" :
              dec += "\n"
-        elif i == " ":
-            dec += " "
+       # elif i == " ":
+        #    dec += " "
         else: 
              dec += chr((ord(i) - tempKey-32) %95 + 32)
                 
